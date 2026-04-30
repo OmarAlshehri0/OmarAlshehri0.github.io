@@ -11,26 +11,116 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&family=Silkscreen:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Oxanium:wght@400;500;600;700&family=Silkscreen:wght@400;700&family=Tajawal:wght@400;500;700;800&display=swap"
         rel="stylesheet"
     >
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="page-shell">
-        <div class="page-toolbar">
-            <div class="language-switcher" aria-label="Language selector" data-i18n-attr="aria-label:language.selector">
-                <button class="language-btn active" type="button" data-lang="en" aria-pressed="true">
-                    <span class="flag" aria-hidden="true">🇺🇸</span>
-                    <span data-i18n="language.english">English</span>
-                </button>
-                <button class="language-btn" type="button" data-lang="ar" aria-pressed="false">
-                    <span class="flag" aria-hidden="true">🇸🇦</span>
-                    <span data-i18n="language.arabic">Arabic</span>
-                </button>
-            </div>
-        </div>
+    <div class="ambient-layer" aria-hidden="true">
+        <span class="ambient-particle particle-one"></span>
+        <span class="ambient-particle particle-two"></span>
+        <span class="ambient-particle particle-three"></span>
+        <span class="ambient-particle particle-four"></span>
+        <span class="ambient-particle particle-five"></span>
+        <span class="ambient-fragment fragment-one"></span>
+        <span class="ambient-fragment fragment-two"></span>
+        <span class="ambient-fragment fragment-three"></span>
+        <span class="ore-particle ore-gold ore-one"></span>
+        <span class="ore-particle ore-gold ore-two"></span>
+        <span class="ore-particle ore-iron ore-three"></span>
+        <span class="ore-particle ore-iron ore-four"></span>
+        <span class="ore-particle ore-diamond ore-five"></span>
+        <span class="ore-particle ore-diamond ore-six"></span>
+        <span class="ore-particle ore-light ore-seven"></span>
+        <span class="ore-particle ore-light ore-eight"></span>
+        <span class="ore-particle ore-gold ore-nine"></span>
+        <span class="ore-particle ore-iron ore-ten"></span>
+    </div>
 
+    <div class="project-spotlight" aria-hidden="true"></div>
+
+    <div id="minecraftHelper" class="minecraft-helper hidden" aria-live="polite">
+        <button
+            id="minecraftHelperClose"
+            class="minecraft-helper-close"
+            type="button"
+            aria-label="Close helper"
+            data-i18n-attr="aria-label:helper.close"
+        >
+            ×
+        </button>
+        <a
+            class="minecraft-helper-bubble"
+            href="https://wa.me/966595824433"
+            target="_blank"
+            rel="noopener noreferrer"
+            data-i18n="helper.message"
+        >
+            Need help or have a question? Message me on WhatsApp.
+        </a>
+        <button
+            id="minecraftHelperCharacter"
+            class="pixel-miner"
+            type="button"
+            aria-label="Message me on WhatsApp"
+            data-i18n-attr="aria-label:helper.open"
+        >
+            <span class="miner-head"></span>
+            <span class="miner-body"></span>
+            <span class="miner-arm"></span>
+            <span class="miner-leg leg-one"></span>
+            <span class="miner-leg leg-two"></span>
+            <span class="miner-pickaxe"></span>
+        </button>
+    </div>
+
+    <div class="pixel-cursor" aria-hidden="true">
+        <span class="cursor-glow"></span>
+        <svg class="cursor-sword" viewBox="0 0 48 48" focusable="false">
+            <rect class="sword-edge" x="9" y="3" width="6" height="6"></rect>
+            <rect class="sword-blade" x="15" y="9" width="6" height="6"></rect>
+            <rect class="sword-edge" x="21" y="15" width="6" height="6"></rect>
+            <rect class="sword-blade" x="27" y="21" width="6" height="6"></rect>
+            <rect class="sword-edge" x="33" y="27" width="6" height="6"></rect>
+            <rect class="sword-glint" x="15" y="3" width="6" height="6"></rect>
+            <rect class="sword-glint" x="21" y="9" width="6" height="6"></rect>
+            <rect class="sword-glint" x="27" y="15" width="6" height="6"></rect>
+            <rect class="sword-guard" x="21" y="27" width="6" height="6"></rect>
+            <rect class="sword-guard" x="33" y="15" width="6" height="6"></rect>
+            <rect class="sword-grip" x="33" y="33" width="6" height="6"></rect>
+            <rect class="sword-pommel" x="39" y="39" width="6" height="6"></rect>
+        </svg>
+    </div>
+
+    <div class="language-switcher" data-language-switcher>
+        <button
+            id="languageToggle"
+            class="language-toggle"
+            type="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+            aria-controls="languageMenu"
+            aria-label="Choose language"
+            data-i18n-attr="aria-label:language.toggleLabel"
+        >
+            <span id="currentLanguageFlag" class="language-flag" aria-hidden="true">🇺🇸</span>
+            <span id="currentLanguageLabel">English</span>
+            <span class="language-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div id="languageMenu" class="language-menu" role="menu" hidden>
+            <button class="language-option active" type="button" role="menuitemradio" aria-checked="true" data-lang="en">
+                <span class="language-flag" aria-hidden="true">🇺🇸</span>
+                <span>English</span>
+            </button>
+            <button class="language-option" type="button" role="menuitemradio" aria-checked="false" data-lang="ar">
+                <span class="language-flag" aria-hidden="true">🇸🇦</span>
+                <span>العربية</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="page-shell">
         <header class="site-header" id="about">
             <nav class="top-nav" aria-label="Primary navigation" data-i18n-attr="aria-label:nav.label">
                 <a href="#about" class="nav-link active" data-i18n="nav.about">About</a>
@@ -40,7 +130,7 @@
 
             <div class="hero-panel panel">
                 <div class="hero-copy">
-                    <h1>Omar Alshehri</h1>
+                    <h1 data-i18n="hero.name">Omar Alshehri</h1>
                     <p class="hero-intro" data-i18n="hero.introOne">
                         Software Engineering student at King Fahd University of Petroleum & Minerals (KFUPM)
                         with hands-on experience in web design and front-end development.
@@ -65,7 +155,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="mailto:Alshehri2292@gmail.com" aria-label="Email">
+                            <a href="mailto:Alshehri2292@gmail.com" aria-label="Email" data-i18n-attr="aria-label:social.email">
                                 <span class="icon-frame">
                                     <svg viewBox="0 0 24 24" aria-hidden="true">
                                         <path d="M3 5.5h18a1 1 0 0 1 1 1v11a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1Zm0 2v.2l9 5.84 9-5.84v-.2H3Zm18 2.57-8.46 5.48a1 1 0 0 1-1.08 0L3 10.07v6.43h18v-6.43Z"/>
@@ -75,7 +165,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="https://wa.me/966595824433" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                            <a href="https://wa.me/966595824433" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" data-i18n-attr="aria-label:social.whatsapp">
                                 <span class="icon-frame">
                                     <svg viewBox="0 0 24 24" aria-hidden="true">
                                         <path d="M20.52 3.48A11.8 11.8 0 0 0 12.07 0C5.57 0 .29 5.27.29 11.77c0 2.07.54 4.09 1.56 5.86L0 24l6.54-1.72a11.74 11.74 0 0 0 5.53 1.41h.01c6.49 0 11.78-5.28 11.78-11.78 0-3.15-1.22-6.1-3.34-8.43Zm-8.45 18.2h-.01a9.8 9.8 0 0 1-4.99-1.36l-.36-.21-3.88 1.02 1.04-3.79-.24-.39a9.76 9.76 0 0 1-1.5-5.18c0-5.42 4.41-9.83 9.84-9.83 2.62 0 5.08 1.02 6.93 2.88a9.73 9.73 0 0 1 2.88 6.95c0 5.42-4.41 9.82-9.81 9.82Zm5.39-7.34c-.29-.15-1.71-.84-1.98-.93-.26-.1-.45-.15-.64.15-.19.29-.74.93-.91 1.12-.17.19-.34.22-.63.08-.29-.15-1.22-.45-2.33-1.43-.86-.76-1.44-1.7-1.61-1.99-.17-.29-.02-.44.13-.59.14-.14.29-.34.44-.51.15-.17.19-.29.29-.49.09-.19.05-.37-.02-.51-.07-.15-.64-1.55-.88-2.12-.23-.56-.47-.49-.64-.5l-.54-.01c-.19 0-.5.07-.77.37-.26.29-1 1-.99 2.44 0 1.43 1.03 2.81 1.18 3 .15.19 2.02 3.12 4.98 4.25.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.08 1.71-.7 1.95-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.2-.55-.34Z"/>
@@ -107,11 +197,12 @@
                     <button class="tab-btn" type="button" data-target="systems" aria-pressed="false" data-i18n="projects.systems">Systems</button>
                 </div>
 
-                <div class="tab-panel active" id="websites">
+                <div class="tab-panel active" id="websites" data-category="websites">
                     <article class="panel featured-project">
                         <div class="featured-copy">
                             <p class="tag" data-i18n="projects.personalProject">Personal Project</p>
-                            <h3>VelonWeb</h3>
+                            <span class="project-badge featured-badge" data-i18n="badge.signatureBuild">Signature Build</span>
+                            <h3 data-i18n="project.velonweb">VelonWeb</h3>
                             <p data-i18n="projects.velonwebDescription">
                                 Founded in 2024, VelonWeb is my own creative web project where I design and
                                 develop responsive websites with a clean visual identity. It represents how I
@@ -123,62 +214,68 @@
                             </a>
                         </div>
                         <div class="featured-media">
-                            <img src="assets/images/Velonweb homepage.png" alt="VelonWeb homepage screenshot">
+                            <img src="assets/images/Velonweb homepage.png" alt="VelonWeb homepage screenshot" data-i18n-attr="alt:project.velonwebAlt">
                         </div>
                     </article>
 
                     <div class="project-grid">
-                        <article class="project-card panel">
-                            <img src="assets/images/Shumos homepage.png" alt="Shumos Care Physiotherapy homepage screenshot">
+                        <article class="project-card panel accent-health">
+                            <img src="assets/images/Shumos homepage.png" alt="Shumos Care Physiotherapy homepage screenshot" data-i18n-attr="alt:project.shumosAlt">
                             <div class="project-body">
-                                <h3>Shumos Care Physiotherapy</h3>
+                                <span class="project-badge" data-i18n="badge.healthcare">Healthcare</span>
+                                <h3 data-i18n="project.shumos">Shumos Care Physiotherapy</h3>
                                 <a class="pixel-btn" href="https://shumca.com/en/" target="_blank" rel="noopener noreferrer"><span data-i18n="projects.visitWebsite">Visit Website</span></a>
                             </div>
                         </article>
 
-                        <article class="project-card panel">
-                            <img src="assets/images/Ornava homepage.png" alt="Ornava Logistics homepage screenshot">
+                        <article class="project-card panel accent-logistics">
+                            <img src="assets/images/Ornava homepage.png" alt="Ornava Logistics homepage screenshot" data-i18n-attr="alt:project.ornavaAlt">
                             <div class="project-body">
-                                <h3>Ornava Logistics</h3>
+                                <span class="project-badge" data-i18n="badge.logistics">Logistics</span>
+                                <h3 data-i18n="project.ornava">Ornava Logistics</h3>
                                 <a class="pixel-btn" href="https://ornavalogistics.com/" target="_blank" rel="noopener noreferrer"><span data-i18n="projects.visitWebsite">Visit Website</span></a>
                             </div>
                         </article>
 
-                        <article class="project-card panel">
-                            <img src="assets/images/Ruba homepage.png" alt="Ruba Law and Legal Consulting homepage screenshot">
+                        <article class="project-card panel accent-legal">
+                            <img src="assets/images/Ruba homepage.png" alt="Ruba Law and Legal Consulting homepage screenshot" data-i18n-attr="alt:project.rubaAlt">
                             <div class="project-body">
-                                <h3>Ruba Law &amp; Legal Consulting</h3>
+                                <span class="project-badge" data-i18n="badge.legal">Legal</span>
+                                <h3 data-i18n="project.ruba">Ruba Law &amp; Legal Consulting</h3>
                                 <a class="pixel-btn" href="https://ruba-law.com/" target="_blank" rel="noopener noreferrer"><span data-i18n="projects.visitWebsite">Visit Website</span></a>
                             </div>
                         </article>
 
-                        <article class="project-card panel">
-                            <img src="assets/images/Rowad Al-Najah Law homepage.png" alt="Rowad Al-Najah Law homepage screenshot">
+                        <article class="project-card panel accent-legal">
+                            <img src="assets/images/Rowad Al-Najah Law homepage.png" alt="Rowad Al-Najah Law homepage screenshot" data-i18n-attr="alt:project.rowadAlt">
                             <div class="project-body">
-                                <h3>Rowad Al-Najah Law</h3>
+                                <span class="project-badge" data-i18n="badge.legal">Legal</span>
+                                <h3 data-i18n="project.rowad">Rowad Al-Najah Law</h3>
                                 <a class="pixel-btn" href="https://rowadlaw.sa/" target="_blank" rel="noopener noreferrer"><span data-i18n="projects.visitWebsite">Visit Website</span></a>
                             </div>
                         </article>
 
-                        <article class="project-card panel">
-                            <img src="assets/images/Pioneers law and healthcare homepage.png" alt="Pioneers Law and Healthcare homepage screenshot">
+                        <article class="project-card panel accent-health">
+                            <img src="assets/images/Pioneers law and healthcare homepage.png" alt="Pioneers Law and Healthcare homepage screenshot" data-i18n-attr="alt:project.pioneersAlt">
                             <div class="project-body">
-                                <h3>Pioneers Law and Healthcare</h3>
+                                <span class="project-badge" data-i18n="badge.healthLegal">Health + Legal</span>
+                                <h3 data-i18n="project.pioneers">Pioneers Law and Healthcare</h3>
                                 <a class="pixel-btn" href="https://pionexs.com/" target="_blank" rel="noopener noreferrer"><span data-i18n="projects.visitWebsite">Visit Website</span></a>
                             </div>
                         </article>
 
-                        <article class="project-card panel">
-                            <img src="assets/images/MARSSA homepage.png" alt="MARSSA POTTERY homepage screenshot">
+                        <article class="project-card panel accent-craft">
+                            <img src="assets/images/MARSSA homepage.png" alt="MARSSA POTTERY homepage screenshot" data-i18n-attr="alt:project.marssaAlt">
                             <div class="project-body">
-                                <h3>MARSSA POTTERY</h3>
+                                <span class="project-badge" data-i18n="badge.craft">Craft</span>
+                                <h3 data-i18n="project.marssa">MARSSA POTTERY</h3>
                                 <a class="pixel-btn" href="https://marsaaladl.com/" target="_blank" rel="noopener noreferrer"><span data-i18n="projects.visitWebsite">Visit Website</span></a>
                             </div>
                         </article>
                     </div>
                 </div>
 
-                <div class="tab-panel" id="games" hidden>
+                <div class="tab-panel" id="games" data-category="games" hidden>
                     <article class="panel construction-panel">
                         <p class="tag warning-tag" data-i18n="projects.underConstruction">Under Construction</p>
                         <h3 data-i18n="projects.gamesPortfolio">Games Portfolio</h3>
@@ -194,7 +291,7 @@
                     </article>
                 </div>
 
-                <div class="tab-panel" id="systems" hidden>
+                <div class="tab-panel" id="systems" data-category="systems" hidden>
                     <article class="panel construction-panel">
                         <p class="tag warning-tag" data-i18n="projects.comingSoon">Coming Soon</p>
                         <h3 data-i18n="projects.systemsPortfolio">Systems Portfolio</h3>
@@ -218,19 +315,19 @@
 
                 <div class="contact-form-wrap">
                     <form id="contactForm" class="panel contact-form" novalidate>
-                        <label for="nameInput"><span data-i18n="contact.name">Name</span> <span class="required-mark">*</span></label>
+                        <label for="nameInput"><span data-i18n="contact.name">Name</span> <span>*</span></label>
                         <input id="nameInput" name="name" type="text" placeholder="Name" data-i18n-attr="placeholder:contact.namePlaceholder" required>
                         <p id="nameError" class="field-error hidden"></p>
 
-                        <label for="phoneInput"><span data-i18n="contact.phone">Phone Number</span> <span class="required-mark">*</span></label>
+                        <label for="phoneInput"><span data-i18n="contact.phone">Phone Number</span> <span>*</span></label>
                         <input id="phoneInput" name="phone" type="tel" placeholder="+966..." data-i18n-attr="placeholder:contact.phonePlaceholder" inputmode="tel" required>
                         <p id="phoneError" class="field-error hidden"></p>
 
-                        <label for="emailInput"><span data-i18n="contact.email">Email</span> <span class="required-mark">*</span></label>
+                        <label for="emailInput"><span data-i18n="contact.email">Email</span> <span>*</span></label>
                         <input id="emailInput" name="email" type="email" placeholder="your@email.com" data-i18n-attr="placeholder:contact.emailPlaceholder" required>
                         <p id="emailError" class="field-error hidden"></p>
 
-                        <label for="messageInput"><span data-i18n="contact.message">Message</span> <span class="required-mark">*</span></label>
+                        <label for="messageInput"><span data-i18n="contact.message">Message</span> <span>*</span></label>
                         <textarea id="messageInput" name="message" rows="5" placeholder="Write your message here" data-i18n-attr="placeholder:contact.messagePlaceholder" required></textarea>
                         <p id="messageError" class="field-error hidden"></p>
 
@@ -242,7 +339,7 @@
         </main>
 
         <footer class="site-footer">
-            <p>&copy; Omar Alshehri</p>
+            <p>&copy; <span data-i18n="hero.name">Omar Alshehri</span></p>
         </footer>
     </div>
 

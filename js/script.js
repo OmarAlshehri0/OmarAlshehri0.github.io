@@ -1,24 +1,62 @@
 const navLinks = document.querySelectorAll(".nav-link");
 const sections = document.querySelectorAll("main section, header[id]");
+const projectsSection = document.getElementById("projects");
 const tabButtons = document.querySelectorAll(".tab-btn");
 const tabPanels = document.querySelectorAll(".tab-panel");
-const languageButtons = document.querySelectorAll(".language-btn");
-const translatableElements = document.querySelectorAll("[data-i18n]");
-const translatableAttributeElements = document.querySelectorAll("[data-i18n-attr]");
 const backToTopBtn = document.getElementById("backToTopBtn");
 
+const languageSwitcher = document.querySelector("[data-language-switcher]");
+const languageToggle = document.getElementById("languageToggle");
+const languageMenu = document.getElementById("languageMenu");
+const languageOptions = document.querySelectorAll(".language-option");
+const currentLanguageFlag = document.getElementById("currentLanguageFlag");
+const currentLanguageLabel = document.getElementById("currentLanguageLabel");
+const translatableElements = document.querySelectorAll("[data-i18n]");
+const translatableAttributeElements = document.querySelectorAll("[data-i18n-attr]");
+const metaDescription = document.querySelector('meta[name="description"]');
+const minecraftHelper = document.getElementById("minecraftHelper");
+const minecraftHelperClose = document.getElementById("minecraftHelperClose");
+const minecraftHelperCharacter = document.getElementById("minecraftHelperCharacter");
+const pixelCursor = document.querySelector(".pixel-cursor");
+const revealElements = document.querySelectorAll(".site-header, .section-block, .project-card");
+const canAnimate = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const canUseCustomCursor = window.matchMedia("(hover: hover) and (pointer: fine)").matches && canAnimate;
+const canUseProjectSpotlight = window.matchMedia("(min-width: 721px)").matches && canAnimate;
+const canUseMinecraftHelper =
+  window.matchMedia("(min-width: 721px) and (hover: hover) and (pointer: fine)").matches && canAnimate;
+
 const defaultLanguage = "en";
+const languageStorageKey = "portfolioLanguage";
+const minecraftHelperSessionKey = "minecraftHelperClosed";
+const whatsappUrl = "https://wa.me/966595824433";
+
+const languageMeta = {
+  en: {
+    flag: "🇺🇸",
+    label: "English",
+    direction: "ltr",
+  },
+  ar: {
+    flag: "🇸🇦",
+    label: "العربية",
+    direction: "rtl",
+  },
+};
 
 const translations = {
   en: {
     "page.title": "Omar Alshehri | Retro Portfolio",
-    "language.selector": "Language selector",
-    "language.english": "English",
-    "language.arabic": "Arabic",
+    "meta.description":
+      "Retro RPG-style personal portfolio for Omar Alshehri, featuring web projects, contact details, and a polished one-page experience.",
+    "language.toggleLabel": "Choose language",
+    "helper.message": "Need help or have a question? Message me on WhatsApp.",
+    "helper.close": "Close helper",
+    "helper.open": "Message me on WhatsApp",
     "nav.label": "Primary navigation",
     "nav.about": "About",
     "nav.projects": "Projects",
     "nav.contact": "Contact",
+    "hero.name": "Omar Alshehri",
     "hero.introOne":
       "Software Engineering student at King Fahd University of Petroleum & Minerals (KFUPM) with hands-on experience in web design and front-end development.",
     "hero.introTwo":
@@ -35,9 +73,29 @@ const translations = {
     "projects.games": "Games",
     "projects.systems": "Systems",
     "projects.personalProject": "Personal Project",
+    "badge.signatureBuild": "Signature Build",
+    "badge.healthcare": "Healthcare",
+    "badge.logistics": "Logistics",
+    "badge.legal": "Legal",
+    "badge.healthLegal": "Health + Legal",
+    "badge.craft": "Craft",
+    "project.velonweb": "VelonWeb",
     "projects.velonwebDescription":
       "Founded in 2024, VelonWeb is my own creative web project where I design and develop responsive websites with a clean visual identity. It represents how I approach real-world web work: thoughtful layout, strong presentation, and a focus on making each site feel professional and easy to use.",
     "projects.visitWebsite": "Visit Website",
+    "project.shumos": "Shumos Care Physiotherapy",
+    "project.ornava": "Ornava Logistics",
+    "project.ruba": "Ruba Law & Legal Consulting",
+    "project.rowad": "Rowad Al-Najah Law",
+    "project.pioneers": "Pioneers Law and Healthcare",
+    "project.marssa": "MARSSA POTTERY",
+    "project.velonwebAlt": "VelonWeb homepage screenshot",
+    "project.shumosAlt": "Shumos Care Physiotherapy homepage screenshot",
+    "project.ornavaAlt": "Ornava Logistics homepage screenshot",
+    "project.rubaAlt": "Ruba Law and Legal Consulting homepage screenshot",
+    "project.rowadAlt": "Rowad Al-Najah Law homepage screenshot",
+    "project.pioneersAlt": "Pioneers Law and Healthcare homepage screenshot",
+    "project.marssaAlt": "MARSSA POTTERY homepage screenshot",
     "projects.underConstruction": "Under Construction",
     "projects.gamesPortfolio": "Games Portfolio",
     "projects.gamesDescription":
@@ -63,36 +121,60 @@ const translations = {
     "form.emailRequired": "Please enter your email address.",
     "form.emailInvalid": "Please enter a valid email address.",
     "form.messageRequired": "Please write a short message.",
-    backToTop: "Back to top",
+    "backToTop": "Back to top",
   },
   ar: {
     "page.title": "عمر الشهري | ملف شخصي رترو",
-    "language.selector": "اختيار اللغة",
-    "language.english": "English",
-    "language.arabic": "العربية",
+    "meta.description":
+      "ملف شخصي لعمر الشهري بطابع رترو يعرض مشاريع الويب وطرق التواصل في تجربة صفحة واحدة مصقولة.",
+    "language.toggleLabel": "اختر اللغة",
+    "helper.message": "تحتاج مساعدة أو لديك سؤال؟ راسلني على واتساب.",
+    "helper.close": "إغلاق المساعد",
+    "helper.open": "راسلني على واتساب",
     "nav.label": "التنقل الرئيسي",
     "nav.about": "نبذة",
     "nav.projects": "المشاريع",
     "nav.contact": "تواصل",
+    "hero.name": "عمر الشهري",
     "hero.introOne":
       "طالب هندسة برمجيات في جامعة الملك فهد للبترول والمعادن (KFUPM)، ولدي خبرة عملية في تصميم الويب وتطوير الواجهات الأمامية.",
     "hero.introTwo":
-      "أتعلم حاليا تطوير الألعاب وأعمل على تطوير نفسي لأصبح مهندس برمجيات Full-Stack سحابيا.",
+      "أتعلم حاليا تطوير الألعاب وأعمل على تطوير مهاراتي لأصبح مهندس برمجيات Full-Stack سحابيا.",
     "hero.introThree":
-      "عملت على مشروع شخصي لتطوير مواقع ويب متجاوبة ونظيفة.",
+      "عملت على مشروع شخصي في تطوير الويب لتقديم مواقع متجاوبة ونظيفة.",
     "hero.portraitAlt": "صورة بكسل لعمر الشهري",
     "social.label": "روابط التواصل",
-    "social.email": "البريد",
+    "social.email": "البريد الإلكتروني",
     "social.whatsapp": "واتساب",
     "projects.title": "المشاريع",
     "projects.categories": "تصنيفات المشاريع",
-    "projects.websites": "مواقع",
-    "projects.games": "ألعاب",
-    "projects.systems": "أنظمة",
+    "projects.websites": "مواقع الويب",
+    "projects.games": "الألعاب",
+    "projects.systems": "الأنظمة",
     "projects.personalProject": "مشروع شخصي",
+    "badge.signatureBuild": "عمل مميز",
+    "badge.healthcare": "رعاية صحية",
+    "badge.logistics": "لوجستيات",
+    "badge.legal": "قانوني",
+    "badge.healthLegal": "صحي وقانوني",
+    "badge.craft": "حرفي",
+    "project.velonweb": "VelonWeb",
     "projects.velonwebDescription":
       "تأسس VelonWeb في عام 2024، وهو مشروعي الإبداعي الخاص لتصميم وتطوير مواقع ويب متجاوبة بهوية بصرية نظيفة. يعكس طريقتي في تنفيذ أعمال الويب الواقعية: تخطيط مدروس، عرض قوي، وتركيز على جعل كل موقع احترافيا وسهل الاستخدام.",
     "projects.visitWebsite": "زيارة الموقع",
+    "project.shumos": "شموس كير للعلاج الطبيعي",
+    "project.ornava": "أورنافا للخدمات اللوجستية",
+    "project.ruba": "ربى للمحاماة والاستشارات القانونية",
+    "project.rowad": "رواد النجاح للمحاماة",
+    "project.pioneers": "بايونيرز للقانون والرعاية الصحية",
+    "project.marssa": "مرسى للفخار",
+    "project.velonwebAlt": "لقطة شاشة للصفحة الرئيسية في VelonWeb",
+    "project.shumosAlt": "لقطة شاشة للصفحة الرئيسية في شموس كير للعلاج الطبيعي",
+    "project.ornavaAlt": "لقطة شاشة للصفحة الرئيسية في أورنافا للخدمات اللوجستية",
+    "project.rubaAlt": "لقطة شاشة للصفحة الرئيسية في ربى للمحاماة والاستشارات القانونية",
+    "project.rowadAlt": "لقطة شاشة للصفحة الرئيسية في رواد النجاح للمحاماة",
+    "project.pioneersAlt": "لقطة شاشة للصفحة الرئيسية في بايونيرز للقانون والرعاية الصحية",
+    "project.marssaAlt": "لقطة شاشة للصفحة الرئيسية في مرسى للفخار",
     "projects.underConstruction": "قيد الإنشاء",
     "projects.gamesPortfolio": "ملف الألعاب",
     "projects.gamesDescription":
@@ -118,25 +200,26 @@ const translations = {
     "form.emailRequired": "يرجى إدخال بريدك الإلكتروني.",
     "form.emailInvalid": "يرجى إدخال بريد إلكتروني صحيح.",
     "form.messageRequired": "يرجى كتابة رسالة قصيرة.",
-    backToTop: "العودة إلى الأعلى",
+    "backToTop": "العودة إلى الأعلى",
   },
 };
 
-let currentLanguage = getSavedLanguage() || defaultLanguage;
+let currentLanguage = getSavedLanguage();
 
 function getSavedLanguage() {
   try {
-    return localStorage.getItem("portfolioLanguage");
+    const savedLanguage = localStorage.getItem(languageStorageKey);
+    return translations[savedLanguage] ? savedLanguage : defaultLanguage;
   } catch (error) {
-    return null;
+    return defaultLanguage;
   }
 }
 
 function saveLanguage(language) {
   try {
-    localStorage.setItem("portfolioLanguage", language);
+    localStorage.setItem(languageStorageKey, language);
   } catch (error) {
-    // The language switch still works for this session if storage is unavailable.
+    // The language still changes for the current visit if storage is unavailable.
   }
 }
 
@@ -144,11 +227,37 @@ function translate(key) {
   return translations[currentLanguage][key] || translations[defaultLanguage][key] || key;
 }
 
+function setLanguageMenuOpen(open) {
+  if (!languageSwitcher || !languageToggle || !languageMenu) {
+    return;
+  }
+
+  languageSwitcher.classList.toggle("open", open);
+  languageMenu.hidden = !open;
+  languageToggle.setAttribute("aria-expanded", String(open));
+}
+
+function updateSavedMessages() {
+  [nameError, phoneError, emailError, messageError, formSuccess].forEach((element) => {
+    if (!element || !element.dataset.messageKey) {
+      return;
+    }
+
+    showFieldState(element, element.dataset.messageKey);
+  });
+}
+
 function applyLanguage(language) {
   currentLanguage = translations[language] ? language : defaultLanguage;
+  const languageInfo = languageMeta[currentLanguage];
+
   document.documentElement.lang = currentLanguage;
-  document.documentElement.dir = currentLanguage === "ar" ? "rtl" : "ltr";
+  document.documentElement.dir = languageInfo.direction;
   document.title = translate("page.title");
+
+  if (metaDescription) {
+    metaDescription.setAttribute("content", translate("meta.description"));
+  }
 
   translatableElements.forEach((element) => {
     element.textContent = translate(element.dataset.i18n);
@@ -168,13 +277,253 @@ function applyLanguage(language) {
     });
   });
 
-  languageButtons.forEach((button) => {
-    const active = button.dataset.lang === currentLanguage;
-    button.classList.toggle("active", active);
-    button.setAttribute("aria-pressed", String(active));
+  if (currentLanguageFlag) {
+    currentLanguageFlag.textContent = languageInfo.flag;
+  }
+
+  if (currentLanguageLabel) {
+    currentLanguageLabel.textContent = languageInfo.label;
+  }
+
+  languageOptions.forEach((option) => {
+    const active = option.dataset.lang === currentLanguage;
+    option.classList.toggle("active", active);
+    option.setAttribute("aria-checked", String(active));
   });
 
+  updateSavedMessages();
+  updateActiveNav();
+  updateProjectSpotlightPosition();
   saveLanguage(currentLanguage);
+}
+
+function setupRevealAnimations() {
+  if (!canAnimate) {
+    revealElements.forEach((element) => element.classList.add("is-visible"));
+    return;
+  }
+
+  revealElements.forEach((element) => element.classList.add("reveal-ready"));
+
+  if (!("IntersectionObserver" in window)) {
+    revealElements.forEach((element) => element.classList.add("is-visible"));
+    return;
+  }
+
+  const revealObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) {
+          return;
+        }
+
+        entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
+      });
+    },
+    {
+      threshold: 0.14,
+      rootMargin: "0px 0px -40px",
+    }
+  );
+
+  revealElements.forEach((element) => revealObserver.observe(element));
+}
+
+function setupAmbientParallax() {
+  if (!canAnimate) {
+    return;
+  }
+
+  let parallaxFrame = null;
+  let nextX = 0;
+  let nextY = 0;
+
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+      const centerX = window.innerWidth / 2;
+      const centerY = window.innerHeight / 2;
+      nextX = ((event.clientX - centerX) / centerX) * 7;
+      nextY = ((event.clientY - centerY) / centerY) * 5;
+
+      if (parallaxFrame) {
+        return;
+      }
+
+      parallaxFrame = window.requestAnimationFrame(() => {
+        document.documentElement.style.setProperty("--parallax-x", `${nextX.toFixed(2)}px`);
+        document.documentElement.style.setProperty("--parallax-y", `${nextY.toFixed(2)}px`);
+        parallaxFrame = null;
+      });
+    },
+    { passive: true }
+  );
+}
+
+function updateProjectSpotlightPosition() {
+  if (!projectsSection) {
+    return;
+  }
+
+  const rect = projectsSection.getBoundingClientRect();
+  const centerX = ((rect.left + rect.width / 2) / window.innerWidth) * 100;
+  const focusY = ((rect.top + Math.min(rect.height * 0.42, window.innerHeight * 0.62)) / window.innerHeight) * 100;
+  const clampedX = Math.min(82, Math.max(18, centerX));
+  const clampedY = Math.min(78, Math.max(22, focusY));
+
+  document.documentElement.style.setProperty("--spotlight-x", `${clampedX.toFixed(2)}%`);
+  document.documentElement.style.setProperty("--spotlight-y", `${clampedY.toFixed(2)}%`);
+}
+
+function setupProjectSpotlight() {
+  if (!projectsSection || !canUseProjectSpotlight || !("IntersectionObserver" in window)) {
+    return;
+  }
+
+  let spotlightFrame = null;
+
+  function requestSpotlightUpdate() {
+    if (spotlightFrame) {
+      return;
+    }
+
+    spotlightFrame = window.requestAnimationFrame(() => {
+      if (document.body.classList.contains("projects-spotlight")) {
+        updateProjectSpotlightPosition();
+      }
+
+      spotlightFrame = null;
+    });
+  }
+
+  const spotlightObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        const active = entry.isIntersecting && entry.intersectionRatio > 0.16;
+        document.body.classList.toggle("projects-spotlight", active);
+
+        if (active) {
+          updateProjectSpotlightPosition();
+        }
+      });
+    },
+    {
+      threshold: [0, 0.16, 0.35],
+      rootMargin: "-8% 0px -20%",
+    }
+  );
+
+  spotlightObserver.observe(projectsSection);
+  window.addEventListener("scroll", requestSpotlightUpdate, { passive: true });
+  window.addEventListener("resize", requestSpotlightUpdate);
+}
+
+function helperWasClosed() {
+  try {
+    return sessionStorage.getItem(minecraftHelperSessionKey) === "true";
+  } catch (error) {
+    return false;
+  }
+}
+
+function markHelperClosed() {
+  try {
+    sessionStorage.setItem(minecraftHelperSessionKey, "true");
+  } catch (error) {
+    // If session storage is unavailable, hiding still works for this page view.
+  }
+}
+
+function openWhatsAppChat() {
+  const whatsappWindow = window.open(whatsappUrl, "_blank");
+
+  if (whatsappWindow) {
+    whatsappWindow.opener = null;
+  }
+}
+
+function hideMinecraftHelper() {
+  if (!minecraftHelper) {
+    return;
+  }
+
+  minecraftHelper.classList.remove("is-visible");
+  markHelperClosed();
+
+  window.setTimeout(() => {
+    minecraftHelper.classList.add("hidden");
+  }, 700);
+}
+
+function showMinecraftHelper() {
+  if (!minecraftHelper || helperWasClosed()) {
+    return;
+  }
+
+  minecraftHelper.classList.remove("has-settled");
+  minecraftHelper.classList.remove("hidden");
+  window.requestAnimationFrame(() => {
+    minecraftHelper.classList.add("is-visible");
+  });
+
+  window.setTimeout(() => {
+    minecraftHelper.classList.add("has-settled");
+  }, 950);
+}
+
+function setupMinecraftHelper() {
+  if (!minecraftHelper || !canUseMinecraftHelper || helperWasClosed()) {
+    return;
+  }
+
+  window.setTimeout(showMinecraftHelper, 15000);
+
+  if (minecraftHelperClose) {
+    minecraftHelperClose.addEventListener("click", hideMinecraftHelper);
+  }
+
+  if (minecraftHelperCharacter) {
+    minecraftHelperCharacter.addEventListener("click", openWhatsAppChat);
+  }
+}
+
+function setupPixelCursor() {
+  if (!pixelCursor || !canUseCustomCursor) {
+    return;
+  }
+
+  let targetX = -80;
+  let targetY = -80;
+  let currentX = targetX;
+  let currentY = targetY;
+
+  function renderCursor() {
+    currentX += (targetX - currentX) * 0.24;
+    currentY += (targetY - currentY) * 0.24;
+    pixelCursor.style.transform = `translate3d(${currentX - 9}px, ${currentY - 4}px, 0)`;
+    window.requestAnimationFrame(renderCursor);
+  }
+
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+      targetX = event.clientX;
+      targetY = event.clientY;
+      document.body.classList.add("custom-cursor-active");
+    },
+    { passive: true }
+  );
+
+  document.addEventListener("mouseleave", () => {
+    document.body.classList.remove("custom-cursor-active");
+  });
+
+  document.addEventListener("mouseenter", () => {
+    document.body.classList.add("custom-cursor-active");
+  });
+
+  renderCursor();
 }
 
 function updateActiveNav() {
@@ -213,10 +562,31 @@ window.addEventListener("load", () => {
   updateBackToTopButton();
 });
 
-languageButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    applyLanguage(button.dataset.lang);
+if (languageToggle) {
+  languageToggle.addEventListener("click", () => {
+    setLanguageMenuOpen(languageMenu.hidden);
   });
+}
+
+languageOptions.forEach((option) => {
+  option.addEventListener("click", () => {
+    applyLanguage(option.dataset.lang);
+    setLanguageMenuOpen(false);
+  });
+});
+
+document.addEventListener("click", (event) => {
+  if (!languageSwitcher || languageSwitcher.contains(event.target)) {
+    return;
+  }
+
+  setLanguageMenuOpen(false);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    setLanguageMenuOpen(false);
+  }
 });
 
 tabButtons.forEach((button) => {
@@ -234,6 +604,8 @@ tabButtons.forEach((button) => {
       panel.classList.toggle("active", active);
       panel.hidden = !active;
     });
+
+    updateProjectSpotlightPosition();
   });
 });
 
@@ -255,8 +627,14 @@ const emailError = document.getElementById("emailError");
 const messageError = document.getElementById("messageError");
 const formSuccess = document.getElementById("formSuccess");
 
-function showFieldState(element, message) {
+function showFieldState(element, messageKey) {
+  if (!element) {
+    return;
+  }
+
+  const message = messageKey ? translate(messageKey) : "";
   element.textContent = message;
+  element.dataset.messageKey = messageKey || "";
   element.classList.toggle("hidden", !message);
 }
 
@@ -286,28 +664,28 @@ if (contactForm) {
     showFieldState(formSuccess, "");
 
     if (!name) {
-      showFieldState(nameError, translate("form.nameRequired"));
+      showFieldState(nameError, "form.nameRequired");
       hasError = true;
     }
 
     if (!phone) {
-      showFieldState(phoneError, translate("form.phoneRequired"));
+      showFieldState(phoneError, "form.phoneRequired");
       hasError = true;
     } else if (!isValidPhone(phone)) {
-      showFieldState(phoneError, translate("form.phoneInvalid"));
+      showFieldState(phoneError, "form.phoneInvalid");
       hasError = true;
     }
 
     if (!email) {
-      showFieldState(emailError, translate("form.emailRequired"));
+      showFieldState(emailError, "form.emailRequired");
       hasError = true;
     } else if (!isValidEmail(email)) {
-      showFieldState(emailError, translate("form.emailInvalid"));
+      showFieldState(emailError, "form.emailInvalid");
       hasError = true;
     }
 
     if (!message) {
-      showFieldState(messageError, translate("form.messageRequired"));
+      showFieldState(messageError, "form.messageRequired");
       hasError = true;
     }
 
@@ -315,9 +693,14 @@ if (contactForm) {
       return;
     }
 
-    showFieldState(formSuccess, translate("form.success"));
+    showFieldState(formSuccess, "form.success");
     contactForm.reset();
   });
 }
 
+setupRevealAnimations();
+setupAmbientParallax();
+setupProjectSpotlight();
+setupMinecraftHelper();
+setupPixelCursor();
 applyLanguage(currentLanguage);
