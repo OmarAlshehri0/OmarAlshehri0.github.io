@@ -3,6 +3,10 @@ const sections = document.querySelectorAll("main section, header[id]");
 const projectsSection = document.getElementById("projects");
 const tabButtons = document.querySelectorAll(".tab-btn");
 const tabPanels = document.querySelectorAll(".tab-panel");
+const projectCarousel = document.querySelector("[data-project-carousel]");
+const projectTrack = document.querySelector("[data-project-track]");
+const carouselPrev = document.querySelector("[data-carousel-prev]");
+const carouselNext = document.querySelector("[data-carousel-next]");
 const backToTopBtn = document.getElementById("backToTopBtn");
 
 const languageSwitcher = document.querySelector("[data-language-switcher]");
@@ -14,21 +18,12 @@ const currentLanguageLabel = document.getElementById("currentLanguageLabel");
 const translatableElements = document.querySelectorAll("[data-i18n]");
 const translatableAttributeElements = document.querySelectorAll("[data-i18n-attr]");
 const metaDescription = document.querySelector('meta[name="description"]');
-const minecraftHelper = document.getElementById("minecraftHelper");
-const minecraftHelperClose = document.getElementById("minecraftHelperClose");
-const minecraftHelperCharacter = document.getElementById("minecraftHelperCharacter");
-const pixelCursor = document.querySelector(".pixel-cursor");
 const revealElements = document.querySelectorAll(".site-header, .section-block, .project-card");
 const canAnimate = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const canUseCustomCursor = window.matchMedia("(hover: hover) and (pointer: fine)").matches && canAnimate;
 const canUseProjectSpotlight = window.matchMedia("(min-width: 721px)").matches && canAnimate;
-const canUseMinecraftHelper =
-  window.matchMedia("(min-width: 721px) and (hover: hover) and (pointer: fine)").matches && canAnimate;
 
 const defaultLanguage = "en";
 const languageStorageKey = "portfolioLanguage";
-const minecraftHelperSessionKey = "minecraftHelperClosed";
-const whatsappUrl = "https://wa.me/966595824433";
 
 const languageMeta = {
   en: {
@@ -45,40 +40,37 @@ const languageMeta = {
 
 const translations = {
   en: {
-    "page.title": "Omar Alshehri | Retro Portfolio",
+    "page.title": "Omar Alshehri | Portfolio",
     "meta.description":
-      "Retro RPG-style personal portfolio for Omar Alshehri, featuring web projects, contact details, and a polished one-page experience.",
+      "Professional software engineering portfolio for Omar Alshehri, featuring web projects, contact details, and a polished one-page experience.",
     "language.toggleLabel": "Choose language",
-    "helper.message": "Need help or have a question? Message me on WhatsApp.",
-    "helper.close": "Close helper",
-    "helper.open": "Message me on WhatsApp",
     "nav.label": "Primary navigation",
     "nav.about": "About",
     "nav.projects": "Projects",
     "nav.contact": "Contact",
     "hero.name": "Omar Alshehri",
+    "hero.title": "Web & Front-End Developer",
     "hero.introOne":
-      "Software Engineering student at King Fahd University of Petroleum & Minerals (KFUPM) with hands-on experience in web design and front-end development.",
-    "hero.introTwo":
-      "I am currently learning game development and improving myself to become a Cloud-Native Full-Stack Engineer.",
-    "hero.introThree":
-      "Worked on a personal web development project delivering responsive, clean websites.",
-    "hero.portraitAlt": "Pixel portrait of Omar Alshehri",
+      "Software Engineering student at King Fahd University of Petroleum & Minerals (KFUPM) with practical experience in web design and front-end development. Through my personal project Velonweb, I built responsive websites for companies, with a focus on clean design, usability, and real client needs.",
+    "hero.portraitAlt": "Profile portrait of Omar Alshehri",
     "social.label": "Social links",
     "social.email": "Email",
     "social.whatsapp": "WhatsApp",
+    "social.resume": "Resume",
     "projects.title": "Projects",
     "projects.categories": "Project categories",
+    "projects.carouselControls": "Project carousel controls",
+    "projects.previous": "Previous projects",
+    "projects.next": "Next projects",
     "projects.websites": "Websites",
     "projects.games": "Games",
     "projects.systems": "Systems",
     "projects.personalProject": "Personal Project",
-    "badge.signatureBuild": "Signature Build",
     "badge.healthcare": "Healthcare",
     "badge.logistics": "Logistics",
     "badge.legal": "Legal",
-    "badge.healthLegal": "Health + Legal",
-    "badge.craft": "Craft",
+    "badge.healthLegal": "Health & Legal",
+    "badge.craft": "Artisan",
     "project.velonweb": "VelonWeb",
     "projects.velonwebDescription":
       "Founded in 2024, VelonWeb is my own creative web project where I design and develop responsive websites with a clean visual identity. It represents how I approach real-world web work: thoughtful layout, strong presentation, and a focus on making each site feel professional and easy to use.",
@@ -108,7 +100,7 @@ const translations = {
     "contact.name": "Name",
     "contact.namePlaceholder": "Name",
     "contact.phone": "Phone Number",
-    "contact.phonePlaceholder": "+966...",
+    "contact.phonePlaceholder": "05...",
     "contact.email": "Email",
     "contact.emailPlaceholder": "your@email.com",
     "contact.message": "Message",
@@ -121,52 +113,50 @@ const translations = {
     "form.emailRequired": "Please enter your email address.",
     "form.emailInvalid": "Please enter a valid email address.",
     "form.messageRequired": "Please write a short message.",
+    "form.sending": "Sending message...",
+    "form.error": "Something went wrong. Please try again.",
     "backToTop": "Back to top",
   },
   ar: {
-    "page.title": "عمر الشهري | ملف شخصي رترو",
+    "page.title": "عمر الشهري | ملف شخصي",
     "meta.description":
-      "ملف شخصي لعمر الشهري بطابع رترو يعرض مشاريع الويب وطرق التواصل في تجربة صفحة واحدة مصقولة.",
+      "ملف شخصي احترافي في هندسة البرمجيات لعمر الشهري يعرض مشاريع الويب وطرق التواصل في تجربة صفحة واحدة مصقولة.",
     "language.toggleLabel": "اختر اللغة",
-    "helper.message": "تحتاج مساعدة أو لديك سؤال؟ راسلني على واتساب.",
-    "helper.close": "إغلاق المساعد",
-    "helper.open": "راسلني على واتساب",
     "nav.label": "التنقل الرئيسي",
     "nav.about": "نبذة",
     "nav.projects": "المشاريع",
     "nav.contact": "تواصل",
-    "hero.name": "عمر الشهري",
+    "hero.name": " Omar Alshehri",
+    "hero.title": "مطور ويب وواجهات امامية",
     "hero.introOne":
-      "طالب هندسة برمجيات في جامعة الملك فهد للبترول والمعادن (KFUPM)، ولدي خبرة عملية في تصميم الويب وتطوير الواجهات الأمامية.",
-    "hero.introTwo":
-      "أتعلم حاليا تطوير الألعاب وأعمل على تطوير مهاراتي لأصبح مهندس برمجيات Full-Stack سحابيا.",
-    "hero.introThree":
-      "عملت على مشروع شخصي في تطوير الويب لتقديم مواقع متجاوبة ونظيفة.",
-    "hero.portraitAlt": "صورة بكسل لعمر الشهري",
+      "طالب هندسة برمجيات في جامعة الملك فهد للبترول والمعادن (KFUPM)، ولدي خبرة عملية في تصميم الويب وتطوير الواجهات الأمامية. من خلال مشروعي الشخصي Velonweb، بنيت مواقع متجاوبة للشركات والمكاتب، مع التركيز على التصميم النظيف، وسهولة الاستخدام، واحتياجات العملاء الفعلية.",
+    "hero.portraitAlt": "صورة شخصية لعمر الشهري",
     "social.label": "روابط التواصل",
     "social.email": "البريد الإلكتروني",
     "social.whatsapp": "واتساب",
+    "social.resume": "السيرة الذاتية",
     "projects.title": "المشاريع",
     "projects.categories": "تصنيفات المشاريع",
+    "projects.carouselControls": "أدوات عرض المشاريع",
+    "projects.previous": "المشاريع السابقة",
+    "projects.next": "المشاريع التالية",
     "projects.websites": "مواقع الويب",
     "projects.games": "الألعاب",
     "projects.systems": "الأنظمة",
     "projects.personalProject": "مشروع شخصي",
-    "badge.signatureBuild": "عمل مميز",
     "badge.healthcare": "رعاية صحية",
     "badge.logistics": "لوجستيات",
     "badge.legal": "قانوني",
     "badge.healthLegal": "صحي وقانوني",
     "badge.craft": "حرفي",
     "project.velonweb": "VelonWeb",
-    "projects.velonwebDescription":
-      "تأسس VelonWeb في عام 2024، وهو مشروعي الإبداعي الخاص لتصميم وتطوير مواقع ويب متجاوبة بهوية بصرية نظيفة. يعكس طريقتي في تنفيذ أعمال الويب الواقعية: تخطيط مدروس، عرض قوي، وتركيز على جعل كل موقع احترافيا وسهل الاستخدام.",
+    "projects.velonwebDescription":"VelonWeb هو مشروعي الشخصي الذي بدأت العمل عليه في 2024 لتصميم وتطوير مواقع ويب متجاوبة بهوية بصرية نظيفة. ويعكس طريقتي في تنفيذ مشاريع حقيقية من خلال تخطيط مدروس، واخراج احترافي، وتركيز على سهولة الاستخدام وجودة التجربة.",
     "projects.visitWebsite": "زيارة الموقع",
     "project.shumos": "شموس كير للعلاج الطبيعي",
     "project.ornava": "أورنافا للخدمات اللوجستية",
     "project.ruba": "ربى للمحاماة والاستشارات القانونية",
     "project.rowad": "رواد النجاح للمحاماة",
-    "project.pioneers": "بايونيرز للقانون والرعاية الصحية",
+    "project.pioneers": "رواد للقانون الصحية",
     "project.marssa": "مرسى للفخار",
     "project.velonwebAlt": "لقطة شاشة للصفحة الرئيسية في VelonWeb",
     "project.shumosAlt": "لقطة شاشة للصفحة الرئيسية في شموس كير للعلاج الطبيعي",
@@ -187,7 +177,7 @@ const translations = {
     "contact.name": "الاسم",
     "contact.namePlaceholder": "الاسم",
     "contact.phone": "رقم الجوال",
-    "contact.phonePlaceholder": "+966...",
+    "contact.phonePlaceholder": "05...",
     "contact.email": "البريد الإلكتروني",
     "contact.emailPlaceholder": "your@email.com",
     "contact.message": "الرسالة",
@@ -200,11 +190,14 @@ const translations = {
     "form.emailRequired": "يرجى إدخال بريدك الإلكتروني.",
     "form.emailInvalid": "يرجى إدخال بريد إلكتروني صحيح.",
     "form.messageRequired": "يرجى كتابة رسالة قصيرة.",
+    "form.sending": "جاري إرسال الرسالة...",
+    "form.error": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
     "backToTop": "العودة إلى الأعلى",
   },
 };
 
 let currentLanguage = getSavedLanguage();
+let refreshProjectCarousel = () => {};
 
 function getSavedLanguage() {
   try {
@@ -225,6 +218,33 @@ function saveLanguage(language) {
 
 function translate(key) {
   return translations[currentLanguage][key] || translations[defaultLanguage][key] || key;
+}
+
+function setMultilineText(element, lines) {
+  element.replaceChildren(
+    ...lines.map((line) => {
+      const lineElement = document.createElement("span");
+      lineElement.textContent = line;
+      return lineElement;
+    })
+  );
+}
+
+function applyHeroLineBreaks(element) {
+  if (element.classList.contains("typing-name")) {
+    setMultilineText(element, currentLanguage === "ar" ? ["عمر", "الشهري"] : ["Omar", "Alshehri"]);
+    return true;
+  }
+
+  if (element.classList.contains("typing-title")) {
+    setMultilineText(
+      element,
+      currentLanguage === "ar" ? ["مطور ويب", "وواجهات أمامية"] : ["Web &", "Front-End Developer"]
+    );
+    return true;
+  }
+
+  return false;
 }
 
 function setLanguageMenuOpen(open) {
@@ -260,6 +280,10 @@ function applyLanguage(language) {
   }
 
   translatableElements.forEach((element) => {
+    if (applyHeroLineBreaks(element)) {
+      return;
+    }
+
     element.textContent = translate(element.dataset.i18n);
   });
 
@@ -294,6 +318,7 @@ function applyLanguage(language) {
   updateSavedMessages();
   updateActiveNav();
   updateProjectSpotlightPosition();
+  window.requestAnimationFrame(refreshProjectCarousel);
   saveLanguage(currentLanguage);
 }
 
@@ -338,6 +363,8 @@ function setupAmbientParallax() {
   let parallaxFrame = null;
   let nextX = 0;
   let nextY = 0;
+  let cursorX = 50;
+  let cursorY = 50;
 
   window.addEventListener(
     "pointermove",
@@ -346,6 +373,8 @@ function setupAmbientParallax() {
       const centerY = window.innerHeight / 2;
       nextX = ((event.clientX - centerX) / centerX) * 7;
       nextY = ((event.clientY - centerY) / centerY) * 5;
+      cursorX = (event.clientX / window.innerWidth) * 100;
+      cursorY = (event.clientY / window.innerHeight) * 100;
 
       if (parallaxFrame) {
         return;
@@ -354,11 +383,46 @@ function setupAmbientParallax() {
       parallaxFrame = window.requestAnimationFrame(() => {
         document.documentElement.style.setProperty("--parallax-x", `${nextX.toFixed(2)}px`);
         document.documentElement.style.setProperty("--parallax-y", `${nextY.toFixed(2)}px`);
+        document.documentElement.style.setProperty("--cursor-x", `${cursorX.toFixed(2)}%`);
+        document.documentElement.style.setProperty("--cursor-y", `${cursorY.toFixed(2)}%`);
         parallaxFrame = null;
       });
     },
     { passive: true }
   );
+}
+
+function setupScrollDynamics() {
+  if (!canAnimate) {
+    return;
+  }
+
+  let scrollFrame = null;
+
+  function updateScrollMotion() {
+    const scrollDepth = Math.min(window.scrollY * 0.035, 28);
+    const ambientLift = Math.min(window.scrollY * -0.018, 0);
+    const portraitLift = Math.max(window.scrollY * -0.01, -12);
+    const scrollFade = Math.min(window.scrollY / 900, 1);
+
+    document.documentElement.style.setProperty("--scroll-depth", `${scrollDepth.toFixed(2)}px`);
+    document.documentElement.style.setProperty("--ambient-lift", `${ambientLift.toFixed(2)}px`);
+    document.documentElement.style.setProperty("--portrait-lift", `${portraitLift.toFixed(2)}px`);
+    document.documentElement.style.setProperty("--scroll-fade", scrollFade.toFixed(3));
+    scrollFrame = null;
+  }
+
+  function requestScrollMotion() {
+    if (scrollFrame) {
+      return;
+    }
+
+    scrollFrame = window.requestAnimationFrame(updateScrollMotion);
+  }
+
+  updateScrollMotion();
+  window.addEventListener("scroll", requestScrollMotion, { passive: true });
+  window.addEventListener("resize", requestScrollMotion);
 }
 
 function updateProjectSpotlightPosition() {
@@ -419,111 +483,139 @@ function setupProjectSpotlight() {
   window.addEventListener("resize", requestSpotlightUpdate);
 }
 
-function helperWasClosed() {
-  try {
-    return sessionStorage.getItem(minecraftHelperSessionKey) === "true";
-  } catch (error) {
-    return false;
-  }
-}
-
-function markHelperClosed() {
-  try {
-    sessionStorage.setItem(minecraftHelperSessionKey, "true");
-  } catch (error) {
-    // If session storage is unavailable, hiding still works for this page view.
-  }
-}
-
-function openWhatsAppChat() {
-  const whatsappWindow = window.open(whatsappUrl, "_blank");
-
-  if (whatsappWindow) {
-    whatsappWindow.opener = null;
-  }
-}
-
-function hideMinecraftHelper() {
-  if (!minecraftHelper) {
+function setupProjectCarousel() {
+  if (!projectCarousel || !projectTrack) {
     return;
   }
 
-  minecraftHelper.classList.remove("is-visible");
-  markHelperClosed();
+  const cards = Array.from(projectTrack.querySelectorAll(".project-card"));
 
-  window.setTimeout(() => {
-    minecraftHelper.classList.add("hidden");
-  }, 700);
-}
-
-function showMinecraftHelper() {
-  if (!minecraftHelper || helperWasClosed()) {
+  if (!cards.length) {
     return;
   }
 
-  minecraftHelper.classList.remove("has-settled");
-  minecraftHelper.classList.remove("hidden");
-  window.requestAnimationFrame(() => {
-    minecraftHelper.classList.add("is-visible");
+  let activeIndex = 0;
+  let autoSlideId = null;
+  let paused = false;
+
+  function getVisibleCount() {
+    if (window.innerWidth >= 1100) {
+      return 3;
+    }
+
+    if (window.innerWidth >= 760) {
+      return 2;
+    }
+
+    return 1;
+  }
+
+  function getMaxIndex() {
+    return Math.max(cards.length - getVisibleCount(), 0);
+  }
+
+  function updateCarousel() {
+    const maxIndex = getMaxIndex();
+    activeIndex = Math.min(activeIndex, maxIndex);
+
+    const trackStyles = window.getComputedStyle(projectTrack);
+    const gap = Number.parseFloat(trackStyles.columnGap || trackStyles.gap) || 0;
+    const cardWidth = cards[0].getBoundingClientRect().width;
+    const offset = (cardWidth + gap) * activeIndex;
+
+    projectTrack.style.transform = `translate3d(-${offset.toFixed(2)}px, 0, 0)`;
+  }
+
+  function stopAutoSlide() {
+    if (!autoSlideId) {
+      return;
+    }
+
+    window.clearInterval(autoSlideId);
+    autoSlideId = null;
+  }
+
+  function startAutoSlide() {
+    stopAutoSlide();
+
+    if (!canAnimate || cards.length <= getVisibleCount()) {
+      return;
+    }
+
+    autoSlideId = window.setInterval(() => {
+      if (paused) {
+        return;
+      }
+
+      moveCarousel(1, false);
+    }, 4800);
+  }
+
+  function moveCarousel(direction, restartAutoSlide = true) {
+    const maxIndex = getMaxIndex();
+
+    if (!maxIndex) {
+      updateCarousel();
+      return;
+    }
+
+    if (direction > 0) {
+      activeIndex = activeIndex >= maxIndex ? 0 : activeIndex + 1;
+    } else {
+      activeIndex = activeIndex <= 0 ? maxIndex : activeIndex - 1;
+    }
+
+    updateCarousel();
+
+    if (restartAutoSlide) {
+      startAutoSlide();
+    }
+  }
+
+  if (carouselPrev) {
+    carouselPrev.addEventListener("click", () => moveCarousel(-1));
+  }
+
+  if (carouselNext) {
+    carouselNext.addEventListener("click", () => moveCarousel(1));
+  }
+
+  projectCarousel.addEventListener("mouseenter", () => {
+    paused = true;
   });
 
-  window.setTimeout(() => {
-    minecraftHelper.classList.add("has-settled");
-  }, 950);
-}
-
-function setupMinecraftHelper() {
-  if (!minecraftHelper || !canUseMinecraftHelper || helperWasClosed()) {
-    return;
-  }
-
-  window.setTimeout(showMinecraftHelper, 15000);
-
-  if (minecraftHelperClose) {
-    minecraftHelperClose.addEventListener("click", hideMinecraftHelper);
-  }
-
-  if (minecraftHelperCharacter) {
-    minecraftHelperCharacter.addEventListener("click", openWhatsAppChat);
-  }
-}
-
-function setupPixelCursor() {
-  if (!pixelCursor || !canUseCustomCursor) {
-    return;
-  }
-
-  let targetX = -80;
-  let targetY = -80;
-  let currentX = targetX;
-  let currentY = targetY;
-
-  function renderCursor() {
-    currentX += (targetX - currentX) * 0.24;
-    currentY += (targetY - currentY) * 0.24;
-    pixelCursor.style.transform = `translate3d(${currentX - 9}px, ${currentY - 4}px, 0)`;
-    window.requestAnimationFrame(renderCursor);
-  }
-
-  window.addEventListener(
-    "pointermove",
-    (event) => {
-      targetX = event.clientX;
-      targetY = event.clientY;
-      document.body.classList.add("custom-cursor-active");
-    },
-    { passive: true }
-  );
-
-  document.addEventListener("mouseleave", () => {
-    document.body.classList.remove("custom-cursor-active");
+  projectCarousel.addEventListener("mouseleave", () => {
+    paused = false;
   });
 
-  document.addEventListener("mouseenter", () => {
-    document.body.classList.add("custom-cursor-active");
+  projectCarousel.addEventListener("focusin", () => {
+    paused = true;
   });
 
-  renderCursor();
+  projectCarousel.addEventListener("focusout", () => {
+    paused = false;
+  });
+
+  window.addEventListener("resize", () => {
+    updateCarousel();
+    startAutoSlide();
+  });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      stopAutoSlide();
+      return;
+    }
+
+    startAutoSlide();
+  });
+
+  refreshProjectCarousel = () => {
+    updateCarousel();
+    startAutoSlide();
+  };
+
+  refreshProjectCarousel();
 }
 
 function updateActiveNav() {
@@ -605,6 +697,10 @@ tabButtons.forEach((button) => {
       panel.hidden = !active;
     });
 
+    if (target === "websites") {
+      window.requestAnimationFrame(refreshProjectCarousel);
+    }
+
     updateProjectSpotlightPosition();
   });
 });
@@ -626,6 +722,7 @@ const phoneError = document.getElementById("phoneError");
 const emailError = document.getElementById("emailError");
 const messageError = document.getElementById("messageError");
 const formSuccess = document.getElementById("formSuccess");
+const formSubmitButton = contactForm ? contactForm.querySelector('button[type="submit"]') : null;
 
 function showFieldState(element, messageKey) {
   if (!element) {
@@ -638,6 +735,15 @@ function showFieldState(element, messageKey) {
   element.classList.toggle("hidden", !message);
 }
 
+function showFormStatus(messageKey, type = "success") {
+  showFieldState(formSuccess, messageKey);
+
+  if (formSuccess) {
+    formSuccess.classList.toggle("is-error", type === "error");
+    formSuccess.classList.toggle("is-pending", type === "pending");
+  }
+}
+
 function isValidEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }
@@ -647,7 +753,7 @@ function isValidPhone(value) {
 }
 
 if (contactForm) {
-  contactForm.addEventListener("submit", (event) => {
+  contactForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const name = nameInput.value.trim();
@@ -661,7 +767,7 @@ if (contactForm) {
     showFieldState(phoneError, "");
     showFieldState(emailError, "");
     showFieldState(messageError, "");
-    showFieldState(formSuccess, "");
+    showFormStatus("");
 
     if (!name) {
       showFieldState(nameError, "form.nameRequired");
@@ -693,14 +799,46 @@ if (contactForm) {
       return;
     }
 
-    showFieldState(formSuccess, "form.success");
-    contactForm.reset();
+    const formData = new FormData(contactForm);
+    const submitUrl = contactForm.action;
+    const submitMethod = contactForm.method || "POST";
+
+    if (formSubmitButton) {
+      formSubmitButton.disabled = true;
+      formSubmitButton.setAttribute("aria-busy", "true");
+    }
+
+    showFormStatus("form.sending", "pending");
+
+    try {
+      const response = await fetch(submitUrl, {
+        method: submitMethod,
+        body: formData,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Form submission failed");
+      }
+
+      showFormStatus("form.success");
+      contactForm.reset();
+    } catch (error) {
+      showFormStatus("form.error", "error");
+    } finally {
+      if (formSubmitButton) {
+        formSubmitButton.disabled = false;
+        formSubmitButton.setAttribute("aria-busy", "false");
+      }
+    }
   });
 }
 
 setupRevealAnimations();
 setupAmbientParallax();
+setupScrollDynamics();
 setupProjectSpotlight();
-setupMinecraftHelper();
-setupPixelCursor();
+setupProjectCarousel();
 applyLanguage(currentLanguage);
