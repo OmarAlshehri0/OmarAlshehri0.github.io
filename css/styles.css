@@ -1933,12 +1933,14 @@ html[dir="rtl"] .project-card-top .project-badge {
 
   .page-shell {
     width: min(100% - 24px, 1000px);
-    padding-top: 82px;
+    padding-top: 136px;
   }
 
   .language-switcher {
-    top: 12px;
-    right: 12px;
+    top: auto;
+    bottom: 18px;
+    right: auto;
+    left: 12px;
   }
 
   .language-toggle {
@@ -1949,11 +1951,15 @@ html[dir="rtl"] .project-card-top .project-badge {
   }
 
   .language-menu {
+    top: auto;
+    bottom: calc(100% + 8px);
+    right: auto;
+    left: 0;
     min-width: 158px;
   }
 
   .top-nav {
-    top: 66px;
+    top: 72px;
     right: 12px;
     left: 12px;
     width: auto;
@@ -1995,13 +2001,24 @@ html[dir="rtl"] .project-card-top .project-badge {
   }
 
   .hero-title {
-    font-size: clamp(2.15rem, 10vw, 2.75rem);
+    font-size: clamp(1.95rem, 8.7vw, 2.45rem);
   }
 
   .hero-intro {
     font-size: 0.98rem;
     line-height: 1.72;
     padding: 18px;
+    text-align: center;
+  }
+
+  html[dir="rtl"] .hero-title {
+    justify-self: center;
+    text-align: center;
+    padding-inline: 0 0.09em;
+  }
+
+  html[dir="rtl"] .hero-intro {
+    text-align: center;
   }
 
   .section-title h2 {
