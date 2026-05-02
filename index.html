@@ -14,6 +14,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap"
         rel="stylesheet"
     >
+    <link rel="preload" as="image" href="assets/images/optimized/profile-portrait.png" fetchpriority="high">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -42,8 +43,8 @@
   border-color: rgba(var(--project-accent-rgb), 0.42);
   transform: translateY(-8px);
 }</code></pre>
-        <pre class="code-snippet code-four"><code>&lt;form id="contactForm" class="contact-form"
-  action="https://formspree.io/f/mgvyjqyk" method="POST"&gt;</code></pre>
+        <pre class="code-snippet code-four"><code>&lt;form class="contact-form"
+  method="POST" novalidate&gt;</code></pre>
         <pre class="code-snippet code-five"><code>.portrait-frame::before {
   background: radial-gradient(...);
   animation: portraitAura 9s ease-in-out infinite;
@@ -108,7 +109,7 @@
                         <span class="portrait-symbol symbol-four" aria-hidden="true">&lt; &gt;</span>
                         <span class="portrait-symbol symbol-five" aria-hidden="true">,</span>
                         <span class="portrait-symbol symbol-six" aria-hidden="true">]</span>
-                        <img src="assets/images/my profile image.PNG" alt="Profile portrait of Omar Alshehri" data-i18n-attr="alt:hero.portraitAlt">
+                        <img src="assets/images/optimized/profile-portrait.png" width="726" height="900" alt="Profile portrait of Omar Alshehri" data-i18n-attr="alt:hero.portraitAlt" fetchpriority="high" loading="eager" decoding="async">
                     </div>
                 </div>
                 <div class="hero-title-block">
@@ -194,13 +195,13 @@
                             </a>
                         </div>
                         <div class="featured-media">
-                            <img src="assets/images/Velonweb homepage.png" alt="VelonWeb homepage screenshot" data-i18n-attr="alt:project.velonwebAlt">
+                            <img src="assets/images/optimized/velonweb-homepage.jpg" width="1400" height="874" alt="VelonWeb homepage screenshot" data-i18n-attr="alt:project.velonwebAlt" loading="lazy" decoding="async">
                         </div>
                     </article>
 
                     <div class="project-grid">
                         <article class="project-card panel accent-health">
-                            <img src="assets/images/Shumos homepage.png" alt="Shumos Care Physiotherapy homepage screenshot" data-i18n-attr="alt:project.shumosAlt">
+                            <img src="assets/images/optimized/shumos-homepage.jpg" width="1400" height="875" alt="Shumos Care Physiotherapy homepage screenshot" data-i18n-attr="alt:project.shumosAlt" loading="lazy" decoding="async">
                             <div class="project-body">
                                 <div class="project-card-top">
                                     <span class="project-number">02</span>
@@ -212,7 +213,7 @@
                         </article>
 
                         <article class="project-card panel accent-logistics">
-                            <img src="assets/images/Ornava homepage.png" alt="Ornava Logistics homepage screenshot" data-i18n-attr="alt:project.ornavaAlt">
+                            <img src="assets/images/optimized/ornava-homepage.jpg" width="1400" height="875" alt="Ornava Logistics homepage screenshot" data-i18n-attr="alt:project.ornavaAlt" loading="lazy" decoding="async">
                             <div class="project-body">
                                 <div class="project-card-top">
                                     <span class="project-number">03</span>
@@ -224,7 +225,7 @@
                         </article>
 
                         <article class="project-card panel accent-legal">
-                            <img src="assets/images/Ruba homepage.png" alt="Ruba Law and Legal Consulting homepage screenshot" data-i18n-attr="alt:project.rubaAlt">
+                            <img src="assets/images/optimized/ruba-homepage.jpg" width="1400" height="875" alt="Ruba Law and Legal Consulting homepage screenshot" data-i18n-attr="alt:project.rubaAlt" loading="lazy" decoding="async">
                             <div class="project-body">
                                 <div class="project-card-top">
                                     <span class="project-number">04</span>
@@ -236,7 +237,7 @@
                         </article>
 
                         <article class="project-card panel accent-legal">
-                            <img src="assets/images/Rowad Al-Najah Law homepage.png" alt="Rowad Al-Najah Law homepage screenshot" data-i18n-attr="alt:project.rowadAlt">
+                            <img src="assets/images/optimized/rowad-homepage.jpg" width="1400" height="875" alt="Rowad Al-Najah Law homepage screenshot" data-i18n-attr="alt:project.rowadAlt" loading="lazy" decoding="async">
                             <div class="project-body">
                                 <div class="project-card-top">
                                     <span class="project-number">05</span>
@@ -248,7 +249,7 @@
                         </article>
 
                         <article class="project-card panel accent-health">
-                            <img src="assets/images/Pioneers law and healthcare homepage.png" alt="Pioneers Law and Healthcare homepage screenshot" data-i18n-attr="alt:project.pioneersAlt">
+                            <img src="assets/images/optimized/pioneers-homepage.jpg" width="1400" height="875" alt="Pioneers Law and Healthcare homepage screenshot" data-i18n-attr="alt:project.pioneersAlt" loading="lazy" decoding="async">
                             <div class="project-body">
                                 <div class="project-card-top">
                                     <span class="project-number">06</span>
@@ -260,7 +261,7 @@
                         </article>
 
                         <article class="project-card panel accent-craft">
-                            <img src="assets/images/MARSSA homepage.png" alt="MARSSA POTTERY homepage screenshot" data-i18n-attr="alt:project.marssaAlt">
+                            <img src="assets/images/optimized/marssa-homepage.jpg" width="1400" height="875" alt="MARSSA POTTERY homepage screenshot" data-i18n-attr="alt:project.marssaAlt" loading="lazy" decoding="async">
                             <div class="project-body">
                                 <div class="project-card-top">
                                     <span class="project-number">07</span>
@@ -345,6 +346,6 @@
         ↑
     </button>
 
-    <script src="js/script.js"></script>
+    <script src="js/script.js" defer></script>
 </body>
 </html>

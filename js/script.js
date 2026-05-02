@@ -3,10 +3,6 @@ const sections = document.querySelectorAll("main section, header[id]");
 const projectsSection = document.getElementById("projects");
 const tabButtons = document.querySelectorAll(".tab-btn");
 const tabPanels = document.querySelectorAll(".tab-panel");
-const projectCarousel = document.querySelector("[data-project-carousel]");
-const projectTrack = document.querySelector("[data-project-track]");
-const carouselPrev = document.querySelector("[data-carousel-prev]");
-const carouselNext = document.querySelector("[data-carousel-next]");
 const backToTopBtn = document.getElementById("backToTopBtn");
 
 const languageSwitcher = document.querySelector("[data-language-switcher]");
@@ -59,9 +55,6 @@ const translations = {
     "social.resume": "Resume",
     "projects.title": "Projects",
     "projects.categories": "Project categories",
-    "projects.carouselControls": "Project carousel controls",
-    "projects.previous": "Previous projects",
-    "projects.next": "Next projects",
     "projects.websites": "Websites",
     "projects.games": "Games",
     "projects.systems": "Systems",
@@ -137,9 +130,6 @@ const translations = {
     "social.resume": "السيرة الذاتية",
     "projects.title": "المشاريع",
     "projects.categories": "تصنيفات المشاريع",
-    "projects.carouselControls": "أدوات عرض المشاريع",
-    "projects.previous": "المشاريع السابقة",
-    "projects.next": "المشاريع التالية",
     "projects.websites": "مواقع الويب",
     "projects.games": "الألعاب",
     "projects.systems": "الأنظمة",
@@ -197,7 +187,6 @@ const translations = {
 };
 
 let currentLanguage = getSavedLanguage();
-let refreshProjectCarousel = () => {};
 
 function getSavedLanguage() {
   try {
@@ -318,7 +307,6 @@ function applyLanguage(language) {
   updateSavedMessages();
   updateActiveNav();
   updateProjectSpotlightPosition();
-  window.requestAnimationFrame(refreshProjectCarousel);
   saveLanguage(currentLanguage);
 }
 
@@ -483,141 +471,6 @@ function setupProjectSpotlight() {
   window.addEventListener("resize", requestSpotlightUpdate);
 }
 
-function setupProjectCarousel() {
-  if (!projectCarousel || !projectTrack) {
-    return;
-  }
-
-  const cards = Array.from(projectTrack.querySelectorAll(".project-card"));
-
-  if (!cards.length) {
-    return;
-  }
-
-  let activeIndex = 0;
-  let autoSlideId = null;
-  let paused = false;
-
-  function getVisibleCount() {
-    if (window.innerWidth >= 1100) {
-      return 3;
-    }
-
-    if (window.innerWidth >= 760) {
-      return 2;
-    }
-
-    return 1;
-  }
-
-  function getMaxIndex() {
-    return Math.max(cards.length - getVisibleCount(), 0);
-  }
-
-  function updateCarousel() {
-    const maxIndex = getMaxIndex();
-    activeIndex = Math.min(activeIndex, maxIndex);
-
-    const trackStyles = window.getComputedStyle(projectTrack);
-    const gap = Number.parseFloat(trackStyles.columnGap || trackStyles.gap) || 0;
-    const cardWidth = cards[0].getBoundingClientRect().width;
-    const offset = (cardWidth + gap) * activeIndex;
-
-    projectTrack.style.transform = `translate3d(-${offset.toFixed(2)}px, 0, 0)`;
-  }
-
-  function stopAutoSlide() {
-    if (!autoSlideId) {
-      return;
-    }
-
-    window.clearInterval(autoSlideId);
-    autoSlideId = null;
-  }
-
-  function startAutoSlide() {
-    stopAutoSlide();
-
-    if (!canAnimate || cards.length <= getVisibleCount()) {
-      return;
-    }
-
-    autoSlideId = window.setInterval(() => {
-      if (paused) {
-        return;
-      }
-
-      moveCarousel(1, false);
-    }, 4800);
-  }
-
-  function moveCarousel(direction, restartAutoSlide = true) {
-    const maxIndex = getMaxIndex();
-
-    if (!maxIndex) {
-      updateCarousel();
-      return;
-    }
-
-    if (direction > 0) {
-      activeIndex = activeIndex >= maxIndex ? 0 : activeIndex + 1;
-    } else {
-      activeIndex = activeIndex <= 0 ? maxIndex : activeIndex - 1;
-    }
-
-    updateCarousel();
-
-    if (restartAutoSlide) {
-      startAutoSlide();
-    }
-  }
-
-  if (carouselPrev) {
-    carouselPrev.addEventListener("click", () => moveCarousel(-1));
-  }
-
-  if (carouselNext) {
-    carouselNext.addEventListener("click", () => moveCarousel(1));
-  }
-
-  projectCarousel.addEventListener("mouseenter", () => {
-    paused = true;
-  });
-
-  projectCarousel.addEventListener("mouseleave", () => {
-    paused = false;
-  });
-
-  projectCarousel.addEventListener("focusin", () => {
-    paused = true;
-  });
-
-  projectCarousel.addEventListener("focusout", () => {
-    paused = false;
-  });
-
-  window.addEventListener("resize", () => {
-    updateCarousel();
-    startAutoSlide();
-  });
-
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      stopAutoSlide();
-      return;
-    }
-
-    startAutoSlide();
-  });
-
-  refreshProjectCarousel = () => {
-    updateCarousel();
-    startAutoSlide();
-  };
-
-  refreshProjectCarousel();
-}
-
 function updateActiveNav() {
   let currentId = "about";
 
@@ -696,10 +549,6 @@ tabButtons.forEach((button) => {
       panel.classList.toggle("active", active);
       panel.hidden = !active;
     });
-
-    if (target === "websites") {
-      window.requestAnimationFrame(refreshProjectCarousel);
-    }
 
     updateProjectSpotlightPosition();
   });
@@ -840,5 +689,4 @@ setupRevealAnimations();
 setupAmbientParallax();
 setupScrollDynamics();
 setupProjectSpotlight();
-setupProjectCarousel();
 applyLanguage(currentLanguage);
