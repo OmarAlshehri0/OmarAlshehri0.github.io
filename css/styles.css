@@ -1928,12 +1928,12 @@ html[dir="rtl"] .project-card-top .project-badge {
 
 @media (max-width: 720px) {
   html {
-    scroll-padding-top: 128px;
+    scroll-padding-top: 92px;
   }
 
   .page-shell {
     width: min(100% - 24px, 1000px);
-    padding-top: 136px;
+    padding-top: 104px;
   }
 
   .language-switcher {
@@ -1959,7 +1959,7 @@ html[dir="rtl"] .project-card-top .project-badge {
   }
 
   .top-nav {
-    top: 72px;
+    top: 18px;
     right: 12px;
     left: 12px;
     width: auto;
